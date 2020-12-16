@@ -2,14 +2,17 @@
   <div>
     <h1 class="centralizado">Cadastro</h1>
     <h2 class="centralizado"></h2>
+    <p>Titulo: {{foto.titulo}}</p>
+    <p>Url: {{foto.url}}</p>
+    <p>Descricao: {{foto.descricao}}</p>
     <form @submit.prevent="create()">
-      <!--<div class="controle">
+      <div class="controle">
         <label for="titulo">TÍTULO</label>
-        <input id="titulo" autocomplete="off" v-model.lazy="foto.titulo" />
-      </div>-->
+        <input id="titulo" autocomplete="off" @input="update('titulo', $event)" :value="foto.titulo" />
+      </div>
       <div class="controle">
         <label for="url">URL</label>
-        <input id="url" autocomplete="off" v-model.lazy="url" />
+        <input id="url" autocomplete="off" @input="update('url', $event)" :value="foto.url" />
         <imagem-responsiva
           v-show="url"
           :url="url"
@@ -21,7 +24,7 @@
         <textarea
           id="descricao"
           autocomplete="off"
-          v-model="descricao"
+          @input="update('descricao', $event)" :value="foto.descricao"
         ></textarea>
       </div>
       <div class="centralizado">
@@ -45,30 +48,13 @@ export default {
   setup() {
     const store = useStore();
     return {
-      url: computed({
-        get (): string {
-          return store.state.foto.url;
-        },
-        set (value: string): void {
-          return store.commit('updatePictureUrl', value);
-        }
-      }),
-      title: computed({
-        get (): string {
-          return store.state.foto.titulo;
-        },
-        set (value: string): void {
-          return store.commit('updatePictureTitle', value);
-        }
-      }),
-      description: computed({
-        get (): string {
-          return store.state.foto.descricao;
-        },
-        set (value: string): void {
-          return store.commit('updatePictureDesc', value);
-        }
-      }),
+      update (key: string, event: any) {
+        store.commit('update', {
+          path: key,
+          value: event.target.value
+        });
+      },
+      foto: computed(() => store.state.foto),
       create(): void {
         store.dispatch("createPicture");
       }

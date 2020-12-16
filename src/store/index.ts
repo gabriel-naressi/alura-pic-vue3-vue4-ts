@@ -4,7 +4,7 @@ import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
 
 export interface State {
-  foto: Foto;
+  foto: any;
   fotos: Foto[];
   deleteFeedback: string;
   filterText: string;
@@ -17,20 +17,14 @@ const service = new FotoService();
 export const store = createStore<State>({
   strict: process.env.NODE_ENV !== "production",
   state: {
-    foto: new Foto(),
+    foto: new Foto,
     fotos: [],
     deleteFeedback: '',
     filterText: '',
   },
   mutations: {
-    updatePictureTitle(state, value: string): void {
-      state.foto.titulo = value;
-    },
-    updatePictureDesc(state, value: string): void {
-      state.foto.descricao = value;
-    },
-    updatePictureUrl(state, value: string): void {
-      state.foto.url = value;
+    update(state, { path, value }) {
+      state.foto[path] = value;
     },
     pictureCreated(state, picture: Foto) {
       state.fotos.push(picture);
