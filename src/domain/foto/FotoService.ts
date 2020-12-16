@@ -5,4 +5,10 @@ export default class FotoService {
     listar(): Promise<AxiosResponse<Foto[]>> {
         return axios.get('http://localhost:3000/v1/fotos');
     }
+    delete(id: string): Promise<AxiosResponse<number>> {
+        return axios.delete(`http://localhost:3000/v1/fotos/${id}`);
+    }
+    create(picture: Foto): Promise<AxiosResponse<Foto>> {
+        return axios.post("http://localhost:3000/v1/fotos", picture);
+    }
 }

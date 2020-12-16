@@ -1,10 +1,12 @@
 export class Foto {
 
+    _id: string;
     private _titulo: string;
     private _url: string;
     private _descricao: string;
 
-    constructor(titulo = '', url = '', descricao = '') {
+    constructor(id = '', titulo = '', url = '', descricao = '') {
+        this._id = id;
         this._titulo = titulo;
         this._url = url;
         this._descricao = descricao;

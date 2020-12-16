@@ -1,23 +1,35 @@
 <template>
   <div>
     <h1 class="centralizado">{{ title }}</h1>
-    <p v-show="mensagem">{{ mensagem }}</p>
+    <p v-show="deleteFeedback">{{ deleteFeedback }}</p>
+    {{ filterText }}
     <input
       type="search"
       class="filtro"
-      v-on:input="filtro = $event.target.value"
+      v-model="filterText"
       placeholder="filtre por parte do título"
     />
     <ul class="lista-fotos">
       <li
         class="lista-fotos-item"
-        v-for="picture of pictures"
+        v-for="picture of filteredPictures"
         :key="picture.url"
       >
-        <ImagemResponsiva
-          :url="picture.url"
-          :titulo="picture.titulo"
-        />
+        <div class="painel">
+          <Painel :titulo="picture.titulo">
+            <ImagemResponsiva
+              :url="picture.url"
+              :titulo="picture.titulo"
+            />
+            <Botao
+              tipo="button"
+              rotulo="REMOVER"
+              @botaoAtivado="deletePicture($event, picture)"
+              :confirmacao="false"
+              estilo="perigo"
+            />
+          </Painel>
+        </div>
       </li>
     </ul>
   </div>
@@ -29,6 +41,7 @@ import Painel from "../shared/painel/Painel.vue";
 import Botao from "../shared/botao/Botao.vue";
 import { computed } from "vue";
 import { useStore } from "../../store";
+import { Foto } from '@/domain/foto/Foto';
 
 export default {
   //Import de componentes. A chave do objeto é o "apelido" do componente.
@@ -36,30 +49,25 @@ export default {
     const store = useStore();
     store.dispatch("loadPictures");
     return {
+      deletePicture: (e: Event, picture: Foto) => { store.dispatch("deletePicture", picture) },
+      //Two-way Computed Property. Reference: https://next.vuex.vuejs.org/guide/forms.html#two-way-computed-property
+      filterText: computed({
+        get (): string {
+          return store.state.filterText;
+        },
+        set (value: string): void {
+          return store.commit('updateFilterText', value);
+        }
+      }),
+      filteredPictures: computed(() => store.getters.getFilteredPictures),
+      deleteFeedback: computed(() => store.getters.deleteFeedback),
       pictures: computed(() => store.getters.getPictures),
     }
   },
   components: {
     ImagemResponsiva,
-  },
-  //Fonte de dados que se deseja controlar (state).
-  data() {
-    return {
-      title: "Alurapic",
-      fotos: [],
-      filtro: "",
-      mensagem: "",
-    };
-  },
-  computed: {
-    /*fotosComFiltro() {
-      if (this.filtro) {
-        const exp = new RegExp(this.filtro.trim(), "i");
-        return this.fotos.filter((foto) => exp.test(foto.titulo));
-      } else {
-        return this.fotos;
-      }
-    },*/
+    Botao,
+    Painel,
   },
 };
 
