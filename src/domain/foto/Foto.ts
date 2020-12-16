@@ -16,11 +16,24 @@ export class Foto {
         return this._titulo;
     }
 
+    set titulo(titulo: string) {
+        this._titulo = titulo;
+    }
+
     get url(): string {
         return this._url;
+    }
+
+    set url(url: string) {
+        this._url = url;
     }
 
     get descricao(): string {
         return this._descricao;
     }
+
+    set descricao(descricao: string) {
+        this._descricao = descricao;
+    }
+
 }

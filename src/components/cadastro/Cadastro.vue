@@ -2,18 +2,18 @@
   <div>
     <h1 class="centralizado">Cadastro</h1>
     <h2 class="centralizado"></h2>
-    <form @submit.prevent="grava()">
-      <div class="controle">
+    <form @submit.prevent="create()">
+      <!--<div class="controle">
         <label for="titulo">TÍTULO</label>
         <input id="titulo" autocomplete="off" v-model.lazy="foto.titulo" />
-      </div>
+      </div>-->
       <div class="controle">
         <label for="url">URL</label>
-        <input id="url" autocomplete="off" v-model.lazy="foto.url" />
+        <input id="url" autocomplete="off" v-model.lazy="url" />
         <imagem-responsiva
-          v-show="foto.url"
-          :url="foto.url"
-          :titulo="foto.titulo"
+          v-show="url"
+          :url="url"
+          :titulo="titulo"
         />
       </div>
       <div class="controle">
@@ -21,7 +21,7 @@
         <textarea
           id="descricao"
           autocomplete="off"
-          v-model="foto.descricao"
+          v-model="descricao"
         ></textarea>
       </div>
       <div class="centralizado">
@@ -37,7 +37,7 @@
 <script lang="ts">
 import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva.vue";
 import Botao from "../shared/botao/Botao.vue";
-//import { computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "../../store";
 import { Foto } from '@/domain/foto/Foto';
 
@@ -45,16 +45,32 @@ export default {
   setup() {
     const store = useStore();
     return {
-      /*foto: computed({
-        get () {
-          return store.state.foto;
+      url: computed({
+        get (): string {
+          return store.state.foto.url;
         },
-        set (picture: string): void {
-          return store.commit('updatePicture', picture);
+        set (value: string): void {
+          return store.commit('updatePictureUrl', value);
         }
-      }),*/
+      }),
+      title: computed({
+        get (): string {
+          return store.state.foto.titulo;
+        },
+        set (value: string): void {
+          return store.commit('updatePictureTitle', value);
+        }
+      }),
+      description: computed({
+        get (): string {
+          return store.state.foto.descricao;
+        },
+        set (value: string): void {
+          return store.commit('updatePictureDesc', value);
+        }
+      }),
       create(): void {
-        store.dispatch("createPicture", new Foto());
+        store.dispatch("createPicture");
       }
     }
   },

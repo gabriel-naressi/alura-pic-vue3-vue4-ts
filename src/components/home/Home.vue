@@ -44,7 +44,6 @@ import { useStore } from "../../store";
 import { Foto } from '@/domain/foto/Foto';
 
 export default {
-  //Import de componentes. A chave do objeto é o "apelido" do componente.
   setup() {
     const store = useStore();
     store.dispatch("loadPictures");
