@@ -4,7 +4,7 @@ import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
 
 export interface State {
-  foto: any;
+  foto: Foto;
   fotos: Foto[];
   deleteFeedback: string;
   filterText: string;
@@ -23,8 +23,8 @@ export const store = createStore<State>({
     filterText: '',
   },
   mutations: {
-    update(state, { path, value }) {
-      state.foto[path] = value;
+    update(state, at: { path: keyof Foto; value: string}) {
+      state.foto[at.path] = at.value;
     },
     pictureCreated(state, picture: Foto) {
       state.fotos.push(picture);
@@ -54,7 +54,7 @@ export const store = createStore<State>({
         (err) => { commit("errorOnDelete", err) }
       );
     },
-    loadPictures({ commit }, pictures: Foto[]): void {
+    loadPictures({ commit }): void {
       service.listar().then((response) => commit("loadPictures", response.data));
     }
   },
