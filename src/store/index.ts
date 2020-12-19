@@ -17,17 +17,20 @@ const service = new FotoService();
 export const store = createStore<State>({
   strict: process.env.NODE_ENV !== "production",
   state: {
-    foto: new Foto,
+    foto: {} as Foto,
     fotos: [],
     deleteFeedback: '',
     filterText: '',
   },
   mutations: {
+    errorOnCreate(error) {
+      console.log(error);
+    },
     update(state, at: { path: keyof Foto; value: string}) {
       state.foto[at.path] = at.value;
     },
-    pictureCreated(state, picture: Foto) {
-      state.fotos.push(picture);
+    pictureCreated(state) {
+      state.fotos.push(state.foto);
     },
     updateFilterText(state, value) {
       state.filterText = value;
@@ -42,9 +45,9 @@ export const store = createStore<State>({
     }
   },
   actions: {
-    createPicture({commit}, picture: Foto): void {
-      service.create(picture).then(
-        () => { commit("pictureCreated", picture)},
+    createPicture({commit}): void {
+      service.create(this.state.foto).then(
+        () => { commit("pictureCreated", this.state.foto)},
         (err) => { commit("errorOnCreate", err )}
       )
     },

@@ -8,7 +8,7 @@ export default class FotoService {
     delete(id: string): Promise<AxiosResponse<number>> {
         return axios.delete(`http://localhost:3000/v1/fotos/${id}`);
     }
-    create(picture: Foto): Promise<AxiosResponse<Foto>> {
+    create(picture: Omit<Foto, '_id'>): Promise<AxiosResponse<Foto>> {
         return axios.post("http://localhost:3000/v1/fotos", picture);
     }
 }
