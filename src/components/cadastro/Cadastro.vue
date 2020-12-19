@@ -8,11 +8,21 @@
     <form @submit.prevent="create()">
       <div class="controle">
         <label for="titulo">TÍTULO</label>
-        <input id="titulo" autocomplete="off" @input="update('titulo', $event)" :value="foto.titulo" />
+        <input
+          id="titulo"
+          autocomplete="off"
+          @input="update('titulo', $event)"
+          :value="foto.titulo"
+        />
       </div>
       <div class="controle">
         <label for="url">URL</label>
-        <input id="url" autocomplete="off" @input="update('url', $event)" :value="foto.url" />
+        <input
+          id="url"
+          autocomplete="off"
+          @input="update('url', $event)"
+          :value="foto.url"
+        />
         <imagem-responsiva
           v-show="url"
           :url="url"
@@ -24,7 +34,8 @@
         <textarea
           id="descricao"
           autocomplete="off"
-          @input="update('descricao', $event)" :value="foto.descricao"
+          @input="update('descricao', $event)"
+          :value="foto.descricao"
         ></textarea>
       </div>
       <div class="centralizado">
@@ -42,7 +53,6 @@ import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva.vue";
 import Botao from "../shared/botao/Botao.vue";
 import { computed } from "vue";
 import { useStore } from "../../store";
-import { Foto } from '@/domain/foto/Foto';
 
 export default {
   setup() {
